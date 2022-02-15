@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: echo-lp
+  labels:
+    name: echo
+spec:
+  containers:
+    - name: app
+      image: ghcr.io/subicura/echo:v1
+      livenessProbe: # 존재하지 않는 곳에 요청을 넣어서 정상 동작을 체크. 동작 안하면 재시작 시도.
+        httpGet:
+          path: /not/exist
+          port: 8080
+        initialDelaySeconds: 5
+        timeoutSeconds: 2
+        periodSeconds: 5
+        failureThreshold: 1
